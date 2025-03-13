@@ -1,0 +1,101 @@
+<!-- Floating Responsive Navbar -->
+<nav
+  class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm mb-5"
+  style="background-color: #f8f9fa; border-bottom: 2px solid #ddd"
+>
+  <div class="container-fluid">
+    <!-- Brand with Icon -->
+    <a
+      class="navbar-brand d-flex align-items-center"
+      href="/listings"
+      style="margin-left: 5rem"
+    >
+      <img
+        src="/images/icon.png"
+        alt="HotelHive Logo"
+        class="me-2"
+        style="height: 40px"
+      />
+      <span style="font-family: 'Pacifico', serif; font-size: 1.5rem"
+        >HotelHive</span
+      >
+    </a>
+
+    <!-- Navbar Toggler for Small Screens -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible Navbar -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav mb-2 mb-lg-0" style="gap: 10px">
+        <li class="nav-item">
+          <a class="nav-link custom-hover" href="/listings/aboutus">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-hover" href="/listings/contact">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-hover" href="/listings/new"
+            >Add your hotel</a
+          >
+        </li>
+
+        <!-- Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-list" style="color: rgb(0, 0, 0)"></i>
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-end custom-dropdown"
+            aria-labelledby="navbarDropdown"
+          >
+            <% if(!currUser) {%>
+            <li>
+              <a class="dropdown-item custom-hover" href="/user/register"
+                >Register
+                <i class="bi bi-person-add ms-2"></i>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item custom-hover" href="/user/login"
+                >Login
+                <i class="bi bi-door-open-fill ms-3"></i>
+              </a>
+            </li>
+            <%}%> <% if(currUser) {%>
+            <li>
+              <a class="dropdown-item custom-hover" href="/user/logout"
+                >Logout
+                <i class="bi bi-door-open-fill ms-3"></i>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item custom-hover" href="/listings/new">
+                <i class="ms-2"></i>
+                Hello @<%= currUser.name %>
+              </a>
+            </li>
+            <%}%>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,57 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+<body>
+  <div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card p-4 shadow-sm" style="width: 350px">
+      <h3 class="text-center mb-3">Login</h3>
+      <form
+        action="/user/login"
+        method="POST"
+        class="needs-validation"
+        novalidate
+      >
+        <!-- Username -->
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            name="username"
+            class="form-control custom-input"
+            id="username"
+            required
+            autofocus
+          />
+          <div class="invalid-feedback">Please enter your username.</div>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control custom-input"
+            id="password"
+            required
+          />
+          <div class="invalid-feedback">Please enter your password.</div>
+        </div>
+
+        <button
+          class="btn btn-primary w-100 fw-semibold custom-btn"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+
+      <div class="text-center mt-3">
+        <p class="mb-0">
+          Don't have an account?
+          <a href="/user/register" class="text-primary text-decoration-none"
+            >Sign Up</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</body>

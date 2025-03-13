@@ -1,0 +1,37 @@
+<!-- Flash Messages -->
+<div
+  id="flashMessageContainer"
+  class="position-fixed top-0 end-0 p-3"
+  style="z-index: 1050"
+>
+  <% if (success && success.length) { %>
+  <div
+    id="flashSuccess"
+    class="alert alert-success alert-dismissible fade show shadow-lg"
+    role="alert"
+  >
+    <%= success %>
+  </div>
+
+  <% } %> <% if (error && error.length) { %>
+  <div
+    id="flashError"
+    class="alert alert-danger alert-dismissible fade show shadow-lg"
+    role="alert"
+  >
+    <%= error %>
+  </div>
+  <% } %>
+</div>
+
+<!-- Auto-dismiss Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(() => {
+      document.querySelectorAll(".alert").forEach((alert) => {
+        alert.classList.remove("show");
+        setTimeout(() => alert.remove(), 500); // Remove from DOM after fade out
+      });
+    }, 3000);
+  });
+</script>

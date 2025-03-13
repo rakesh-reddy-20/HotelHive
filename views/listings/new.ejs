@@ -1,0 +1,134 @@
+<% layout("layouts/boilerplate.ejs") %>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card rounded-4 p-4 border-2">
+          <h3 class="mb-1 text-center fw-bold">Add Your Hotel</h3>
+          <form
+            action="/listings"
+            method="POST"
+            enctype="multipart/form-data"
+            class="needs-validation"
+            novalidate
+          >
+            <div class="mb-3">
+              <label for="hotelTitle" class="form-label fw-semibold"
+                >Title</label
+              >
+              <input
+                type="text"
+                class="form-control custom-input"
+                id="hotelTitle"
+                name="listing[title]"
+                placeholder="Enter a catchy title"
+                required
+                autofocus
+                aria-label="Hotel Title"
+              />
+              <div class="invalid-feedback">Please enter a catchy title.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="hotelDescription" class="form-label fw-semibold"
+                >Description</label
+              >
+              (<small class="text-muted">Minimum 20 characters required</small>)
+              <textarea
+                class="form-control custom-input"
+                name="listing[description]"
+                id="hotelDescription"
+                rows="3"
+                minlength="10"
+                required
+                aria-label="Hotel Description"
+                placeholder="Provide a brief description"
+              ></textarea>
+              <div class="invalid-feedback">Please write about your hotel.</div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-8">
+                <label for="hotelImage" class="form-label fw-semibold">
+                  Upload Image
+                  <span class="text-danger" style="font-size: 0.9rem"
+                    >(Only .jpeg, .png, .jpg)</span
+                  >
+                </label>
+
+                <input
+                  type="file"
+                  class="form-control custom-input"
+                  id="hotelImage"
+                  name="listing[image]"
+                  placeholder="Enter image link"
+                  aria-label="Hotel Image URL"
+                />
+                <div class="invalid-feedback">Please upload hotel image</div>
+              </div>
+              <div class="mb-3 col-md-4">
+                <label for="hotelPrice" class="form-label fw-semibold"
+                  >Price</label
+                >
+                <input
+                  type="number"
+                  class="form-control custom-input"
+                  id="hotelPrice"
+                  name="listing[price]"
+                  placeholder="INR per night"
+                  required
+                  min="1"
+                  aria-label="Hotel Price"
+                />
+                <div class="invalid-feedback">Please enter the price.</div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-8">
+                <label for="hotelLocation" class="form-label fw-semibold"
+                  >Location</label
+                >
+                <input
+                  type="text"
+                  class="form-control custom-input"
+                  id="hotelLocation"
+                  name="listing[location]"
+                  placeholder="Enter Location to help the customer to find the your place"
+                  required
+                  aria-label="Hotel Location"
+                />
+                <div class="invalid-feedback">Please enter the adress.</div>
+              </div>
+              <div class="mb-3 col-md-4">
+                <label for="hotelCountry" class="form-label fw-semibold"
+                  >Country</label
+                >
+                <select
+                  class="form-control custom-input form-select"
+                  id="hotelCountry"
+                  name="listing[country]"
+                  aria-label="Floating label select example"
+                  required
+                >
+                  <option>-- Select Country --</option>
+                  <% countries.forEach(country => { %>
+                  <option value="<%= country %>"><%= country %></option>
+                  <% }) %>
+                </select>
+                <div class="invalid-feedback">Please choose a Country.</div>
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <button
+                type="submit"
+                class="btn btn-success fw-semibold px-4 custom-btn"
+              >
+                Add Hotel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

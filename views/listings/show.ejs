@@ -1,0 +1,250 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+<body>
+  <script>
+    function confirmAndDelete() {
+      if (confirm("Are you sure you want to delete this listing?")) {
+        document.getElementById("deleteForm").click();
+      }
+    }
+  </script>
+
+  <% if (listing) { %>
+  <div class="d-flex justify-content-center mt-5">
+    <div class="col-md-8 col-lg-6">
+      <div class="card border-0 rounded-3">
+        <img
+          src="<%= listing.image.url || '/default.jpg' %>"
+          class="card-img-top rounded-3 shadow-sm"
+          alt="<%= listing.title || 'Listing Image' %>"
+          style="max-height: 280px; object-fit: cover"
+        />
+        <div class="card-body text-center py-4">
+          <h4 class="card-title fw-bold"><%= listing.title || "N/A" %></h4>
+          <p class="text-muted fst-italic">
+            "<%= listing.description || "No description available." %>"
+          </p>
+
+          <div class="row gap-2">
+            <!-- Left Column -->
+            <div class="text-start mt-3 col">
+              <p class="mb-1">
+                <strong>Price:</strong> ₹<%=
+                listing.price?.toLocaleString("en-IN") || "N/A" %>/-
+              </p>
+              <p class="mb-1">
+                <strong>Location:</strong> <%= listing.location || "Unknown" %>
+              </p>
+              <p class="mb-1">
+                <strong>Country:</strong> <%= listing.country || "Unknown" %>
+              </p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="text-start mt-3 col">
+              <p class="mb-1">
+                <strong>Owned by:</strong> <%= listing.owner.name %>
+              </p>
+              <p class="mb-1">
+                <strong>Contact:</strong> <%= listing.owner.contact %>
+              </p>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="/listings" class="btn btn-dark btn-md px-4">Back</a>
+            <%if(currUser && currUser._id.equals(listing.owner._id)){%>
+            <a
+              href="/listings/<%= listing._id %>/edit"
+              class="btn btn-warning btn-md px-4"
+              >Edit</a
+            >
+
+            <a
+              id="deleteForm"
+              href="/listings/<%= listing._id %>/delete"
+              style="display: none"
+            ></a>
+            <button
+              type="button"
+              class="btn btn-danger btn-md px-4"
+              onclick="confirmAndDelete()"
+            >
+              Delete
+            </button>
+            <%}%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Reviews Section -->
+      <div class="col-12 col-lg-7">
+        <h3 class="fw-bold text-center mb-4">Customer Reviews</h3>
+        <div class="row">
+          <% if (listing.reviews && listing.reviews.length > 0) { %> <%
+          listing.reviews.forEach(review => { %>
+          <div class="col-12 col-md-6 mb-4">
+            <div class="card border-1 rounded-3 h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <h5 class="card-title fw-bold mb-0">
+                      @<%= review.author.username || "Anonymous" %>
+                    </h5>
+                  </div>
+                  <%if(currUser && currUser._id.equals(listing.owner._id)){%>
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-link text-decoration-none p-0"
+                      type="button"
+                      id="dropdownMenuButton<%= review._id %>"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <i class="bi bi-three-dots-vertical text-dark"></i>
+                    </button>
+                    <ul
+                      class="dropdown-menu dropdown-menu-end"
+                      aria-labelledby="dropdownMenuButton<%= review._id %>"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="#">Edit </a>
+                      </li>
+                      <li>
+                        <form
+                          action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                          method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete this review?');"
+                          style="display: inline"
+                        >
+                          <button type="submit" class="dropdown-item">
+                            Delete
+                          </button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+                  <%}%>
+                </div>
+                <p class="text-warning mb-2">
+                  <% for(let i = 0; i < review.rating; i++) { %>
+                  <i class="bi bi-star-fill"></i>
+                  <% } %> <% for(let i = review.rating; i < 5; i++) { %>
+                  <i class="bi bi-star"></i>
+                  <% } %>
+                </p>
+                <p class="card-text fst-italic flex-grow-1">
+                  "<%= review.comment || "No review provided." %>"
+                </p>
+                <p class="text-muted small mb-0">
+                  <strong>Reviewed on:</strong>
+                  <%= new Date(review.createdAt).toLocaleDateString("en-IN") ||
+                  "N/A" %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <% }) %> <% } else { %>
+          <p class="text-center text-muted">
+            No reviews yet. Be the first to review!
+          </p>
+          <% } %>
+        </div>
+      </div>
+      <%if(currUser){%>
+      <div class="col-12 col-lg-5">
+        <h3 class="fw-bold text-center mb-4">Leave a Review</h3>
+        <div class="card border-1">
+          <div class="card-body">
+            <form
+              action="/listings/<%= listing._id %>/reviews"
+              method="POST"
+              class="needs-validation"
+              novalidate
+            >
+              <div class="mb-0">
+                <label for="reviewText" class="form-label fw-semibold">
+                  Rating
+                </label>
+                <fieldset class="starability-slot">
+                  <input
+                    type="radio"
+                    id="no-rate"
+                    class="input-no-rate"
+                    name="review[rating]"
+                    value="1"
+                    checked
+                    aria-label="No rating."
+                  />
+                  <input
+                    type="radio"
+                    id="first-rate1"
+                    name="review[rating]"
+                    value="1"
+                  />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  <input
+                    type="radio"
+                    id="first-rate2"
+                    name="review[rating]"
+                    value="2"
+                  />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input
+                    type="radio"
+                    id="first-rate3"
+                    name="review[rating]"
+                    value="3"
+                  />
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input
+                    type="radio"
+                    id="first-rate4"
+                    name="review[rating]"
+                    value="4"
+                  />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input
+                    type="radio"
+                    id="first-rate5"
+                    name="review[rating]"
+                    value="5"
+                  />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+              </div>
+              <div class="mb-3">
+                <label for="reviewText" class="form-label fw-semibold">
+                  Your Review
+                </label>
+                <textarea
+                  class="form-control shadow-none"
+                  id="reviewText"
+                  name="review[comment]"
+                  rows="3"
+                  placeholder="Write your review..."
+                  required
+                ></textarea>
+                <div class="invalid-feedback">Please write a review.</div>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-success fw-semibold custom-btn"
+              >
+                Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <%}%>
+    </div>
+  </div>
+
+  <% } %>
+</body>

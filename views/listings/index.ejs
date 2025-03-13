@@ -1,0 +1,60 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+<body>
+  <div class="container mt-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="listingContainer">
+      <% allListings.forEach((listing, index) => { %>
+      <div class="col listing-card <% if(index >= 12) { %> d-none <% } %>">
+        <div class="card shadow-sm border-0 rounded-4 h-100 d-flex flex-column">
+          <div class="bookmark">
+            <i class="bi bi-heart fs-5"></i>
+          </div>
+          <a href="/listings/<%= listing._id %>" class="stretched-link">
+            <img
+              src="<%= listing.image ? listing.image.url : '/images/default-hotel.jpg' %>"
+              class="card-img-top rounded-top-4 img-fluid"
+              alt="Listing Image"
+              style="height: 200px; object-fit: cover"
+              loading="lazy"
+            />
+          </a>
+          <div class="card-body d-flex flex-column justify-content-between">
+            <h5 class="card-title fw-bold"><%= listing.title %></h5>
+            <p class="text-muted small mb-1">
+              <strong>Price:</strong> &#8377;<%= listing.price ?
+              listing.price.toLocaleString("en-IN") : "N/A" %>/-
+            </p>
+            <p class="text-muted small mb-1">
+              <strong>Location:</strong> <%= listing.location %>
+            </p>
+            <p class="text-muted small mb-0">
+              <strong>Country:</strong> <%= listing.country %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+
+    <% if (allListings.length > 12) { %>
+    <div class="text-center mt-4">
+      <button id="seeMoreBtn" class="btn btn-dark px-4 py-2 custom-btn">
+        Show More
+      </button>
+    </div>
+    <% } %>
+  </div>
+
+  <script>
+    document
+      .getElementById("seeMoreBtn")
+      ?.addEventListener("click", function () {
+        document
+          .querySelectorAll(".listing-card.d-none")
+          .forEach((card, index) => {
+            if (index < 12) card.classList.remove("d-none");
+          });
+        if (!document.querySelector(".listing-card.d-none"))
+          this.style.display = "none";
+      });
+  </script>
+</body>

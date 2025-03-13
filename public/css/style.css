@@ -1,0 +1,140 @@
+body {
+  font-family: "Roboto", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+.navbar {
+  height: 5rem;
+}
+.navbar-brand img {
+  height: 40px;
+  width: auto;
+}
+
+.navbar-brand {
+  color: linear-gradient(to bottom, #ffcc66 0%, #ffff00 100%);
+  font-size: 2rem;
+}
+
+.logo {
+  font-family: "Playwrite IN", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.custom-hover {
+  color: gray;
+  transition: color 0.3s ease-in-out;
+}
+.custom-hover:hover {
+  color: black;
+  /* font-weight: bold; */
+}
+
+.custom-card {
+  height: 100%; /* Ensures uniform card height */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.custom-card:hover {
+  /* transform: scale(1.05); Slightly enlarges the card */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adds a smooth shadow effect */
+}
+
+.custom-img {
+  height: 200px; /* Set a fixed height for images */
+  object-fit: cover; /* Ensures images maintain aspect ratio and crop excess */
+}
+
+.stretched-link {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Keeps text color consistent */
+}
+
+.custom-dropdown {
+  transform: translateX(0px); /* Move it slightly left */
+}
+
+.custom-title {
+  font-weight: 500;
+}
+
+.show-img {
+  height: 50vh;
+  width: auto;
+  border-radius: 20px;
+}
+
+/* Custom Card Styling */
+.custom-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.custom-img {
+  height: 200px;
+  object-fit: cover;
+}
+.card-body {
+  padding: 1.2rem;
+}
+.custom-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.custom-btn {
+  background-color: #fe424d;
+  transition: all 0.2s ease-in-out;
+  border: none !important;
+}
+.custom-btn:hover {
+  background-color: #f21e2d;
+  border: none !important;
+}
+
+/* Custom Form Styling */
+.custom-input {
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s ease-in-out;
+}
+
+/* Remove Glow on Focus */
+.custom-input:focus {
+  border-color: #000702;
+  box-shadow: none;
+  outline: none;
+}
+
+.image-section {
+  position: relative;
+  top: -30px; /* Adjust this value to move the section up */
+}
+
+@media (max-width: 768px) {
+  .image-section {
+    top: -15px; /* Smaller upward shift on mobile */
+  }
+}
+
+.bookmark {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  /* background-color: gold; */
+  color: black;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}

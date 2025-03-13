@@ -1,0 +1,222 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+<body>
+  <section class="py-5">
+    <div class="container">
+      <div class="row gx-4 align-items-center justify-content-between mt-5">
+        <div class="col-md-7 order-1 image-section">
+          <div class="mb-4">
+            <p>
+              Welcome to <strong>HotelHive</strong> – where comfort meets
+              convenience! <br />
+              Whether you're traveling for business or leisure, we bring you the
+              best stays at <strong>unbeatable prices</strong>. Our seamless
+              booking experience ensures that your perfect getaway is just a few
+              clicks away.
+              <strong
+                >Relax, unwind, and let HotelHive take care of the rest!</strong
+              >
+            </p>
+          </div>
+
+          <!-- Image Gallery -->
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Boat on Calm Water"
+              />
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain1.webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Wintry Mountain Landscape"
+              />
+            </div>
+
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain2.webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Mountains in the Clouds"
+              />
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Boat on Calm Water"
+              />
+            </div>
+
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(18).webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Waves at Sea"
+              />
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain3.webp"
+                class="w-100 shadow-1-strong rounded mb-4"
+                alt="Yosemite National Park"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="col-md-5 order-2">
+          <div
+            class="card-body p-3 p-md-4 p-xl-5 border border-secondary rounded-3 shadow-sm"
+          >
+            <div class="row align-items-center justify-content-between">
+              <div class="col">
+                <div class="mb-4">
+                  <h2 class="h3">Registration</h2>
+                  <h3 class="fs-6 fw-normal text-secondary m-0">
+                    Enter your details to register
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <form
+              action="/user/register"
+              method="POST"
+              class="needs-validation"
+              novalidate
+            >
+              <div class="row gy-3">
+                <!-- Full Name -->
+                <div class="col-12">
+                  <label for="fullName" class="form-label"
+                    >Full Name <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control custom-input"
+                    name="register[name]"
+                    id="fullName"
+                    autofocus
+                    placeholder="Enter your full name"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please enter your full name.
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-12">
+                  <label for="email" class="form-label"
+                    >Email <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="email"
+                    class="form-control custom-input"
+                    name="register[email]"
+                    id="email"
+                    placeholder="name@example.com"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please enter a valid email address.
+                  </div>
+                </div>
+
+                <!-- Contact Number -->
+                <div class="col-12">
+                  <label for="contact" class="form-label"
+                    >Contact Number <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control custom-input"
+                    name="register[contact]"
+                    id="contact"
+                    placeholder="Enter your contact number"
+                    pattern="[0-9]{10}"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please enter a valid 10-digit contact number.
+                  </div>
+                </div>
+
+                <!-- Username -->
+                <div class="col-12">
+                  <label for="username" class="form-label"
+                    >Username <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control custom-input"
+                    name="register[username]"
+                    id="username"
+                    placeholder="Enter your username"
+                    required
+                  />
+                  <div class="invalid-feedback">Please enter a username.</div>
+                </div>
+
+                <!-- Password -->
+                <div class="col-12">
+                  <label for="password" class="form-label"
+                    >Password <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="password"
+                    class="form-control custom-input"
+                    name="register[password]"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <div class="invalid-feedback">Please enter a password.</div>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="col-12">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      name="iAgree"
+                      id="iAgree"
+                      required
+                    />
+                    <label class="form-check-label text-secondary" for="iAgree">
+                      I agree to the
+                      <a href="#!" class="link-primary text-decoration-none"
+                        >terms and conditions</a
+                      >
+                    </label>
+                    <div class="invalid-feedback">
+                      You must agree before submitting.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12">
+                  <button
+                    class="btn btn-primary w-100 fw-semibold custom-btn"
+                    type="submit"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div class="text-center mt-4">
+              <p class="text-secondary">
+                Already have an account?
+                <a href="/user/login" class="link-primary text-decoration-none"
+                  >Sign in</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>

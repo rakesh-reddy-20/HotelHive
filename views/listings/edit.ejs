@@ -1,0 +1,97 @@
+<% layout("layouts/boilerplate.ejs") %>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-8 offset-2">
+        <div class="card shadow-sm p-4">
+          <h3 class="mb-3 text-center">Edit Hotel</h3>
+          <form
+            action="/listings/<%= editListing._id %>?_method=PUT"
+            method="POST"
+          >
+            <div class="mb-3">
+              <label for="hotelTitle" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="hotelTitle"
+                name="listing[title]"
+                value="<%= editListing.title %>"
+                placeholder="Enter a catchy title"
+                required
+                autofocus
+                aria-label="Hotel Title"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="hotelDescription" class="form-label"
+                >Description</label
+              >
+              <textarea
+                class="form-control"
+                name="listing[description]"
+                id="hotelDescription"
+                rows="3"
+                required
+                aria-label="Hotel Description"
+              >
+<%= editListing.description %></textarea
+              >
+            </div>
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="hotelPrice" class="form-label">Price</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="hotelPrice"
+                  name="listing[price]"
+                  placeholder="Price in INR per night"
+                  value="<%= editListing.price %>"
+                  required
+                  min="1"
+                  aria-label="Hotel Price"
+                />
+              </div>
+              <div class="mb-3 col">
+                <label for="hotelLocation" class="form-label">Location</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="hotelLocation"
+                  name="listing[location]"
+                  placeholder="Enter Exact Location"
+                  value="<%= editListing.location %>"
+                  required
+                  aria-label="Hotel Location"
+                />
+              </div>
+              <div class="mb-3 col">
+                <label for="hotelCountry" class="form-label">Country</label>
+                <select
+                  class="form-control form-select"
+                  id="hotelCountry"
+                  name="listing[country]"
+                  aria-label="Floating label select example"
+                  required
+                >
+                  <option value="<%= editListing.country %>">
+                    <%= editListing.country %>
+                  </option>
+                  <option>-- Select --</option>
+                  <% countries.forEach(country => { %>
+                  <option value="<%= country %>"><%= country %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-warning">Update</button>
+            <a href="/listings/<%= editListing._id %>" class="btn btn-secondary"
+              >Back</a
+            >
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

@@ -95,7 +95,7 @@
                       @<%= review.author.username || "Anonymous" %>
                     </h5>
                   </div>
-                  <%if(currUser && currUser._id.equals(listing.owner._id)){%>
+                  <%if(currUser && currUser._id.equals(review.author._id)){%>
                   <div class="dropdown">
                     <button
                       class="btn btn-link text-decoration-none p-0"

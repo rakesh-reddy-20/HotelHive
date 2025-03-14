@@ -22,7 +22,7 @@ router
       failureFlash: true,
     }),
     async (req, res) => {
-      req.flash("success", "welcome to hotelhive");
+      req.flash("success", `Hello ${req.user.name}, Welcome to HotelHive!!!`);
       const redirectUrl = res.locals.redirectUrl || "/listings";
       res.redirect(redirectUrl);
     }

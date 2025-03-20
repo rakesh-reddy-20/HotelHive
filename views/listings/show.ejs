@@ -155,9 +155,10 @@
           <% } %>
         </div>
       </div>
-      <%if(currUser){%>
       <div class="col-12 col-lg-5">
         <h3 class="fw-bold text-center mb-4">Leave a Review</h3>
+        <%if(currUser){%>
+
         <div class="card border-1">
           <div class="card-body">
             <form
@@ -241,8 +242,10 @@
             </form>
           </div>
         </div>
+        <%} else {%>
+        <p class="text-center text-muted">Login to submit Review!</p>
+        <%}%>
       </div>
-      <%}%>
     </div>
   </div>
 

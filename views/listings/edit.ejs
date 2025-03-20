@@ -13,7 +13,7 @@
               <label for="hotelTitle" class="form-label">Title</label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control custom-input"
                 id="hotelTitle"
                 name="listing[title]"
                 value="<%= editListing.title %>"
@@ -28,7 +28,7 @@
                 >Description</label
               >
               <textarea
-                class="form-control"
+                class="form-control custom-input"
                 name="listing[description]"
                 id="hotelDescription"
                 rows="3"
@@ -39,11 +39,11 @@
               >
             </div>
             <div class="row">
-              <div class="mb-3 col">
+              <div class="mb-3 col-12 col-md-4">
                 <label for="hotelPrice" class="form-label">Price</label>
                 <input
                   type="number"
-                  class="form-control"
+                  class="form-control custom-input"
                   id="hotelPrice"
                   name="listing[price]"
                   placeholder="Price in INR per night"
@@ -53,11 +53,11 @@
                   aria-label="Hotel Price"
                 />
               </div>
-              <div class="mb-3 col">
+              <div class="mb-3 col-12 col-md-4">
                 <label for="hotelLocation" class="form-label">Location</label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control custom-input"
                   id="hotelLocation"
                   name="listing[location]"
                   placeholder="Enter Exact Location"
@@ -66,10 +66,10 @@
                   aria-label="Hotel Location"
                 />
               </div>
-              <div class="mb-3 col">
+              <div class="mb-3 col-12 col-md-4">
                 <label for="hotelCountry" class="form-label">Country</label>
                 <select
-                  class="form-control form-select"
+                  class="form-control form-select custom-input"
                   id="hotelCountry"
                   name="listing[country]"
                   aria-label="Floating label select example"
@@ -85,6 +85,7 @@
                 </select>
               </div>
             </div>
+
             <button type="submit" class="btn btn-warning">Update</button>
             <a href="/listings/<%= editListing._id %>" class="btn btn-secondary"
               >Back</a

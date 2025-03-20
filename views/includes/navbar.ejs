@@ -35,7 +35,11 @@
     </button>
 
     <!-- Collapsible Navbar -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      style="background-color: #f8f9fa"
+      id="navbarNav"
+    >
       <ul class="navbar-nav mb-2 mb-lg-0" style="gap: 10px">
         <li class="nav-item">
           <a class="nav-link custom-hover" href="/listings/aboutus">About Us</a>
@@ -49,8 +53,22 @@
           >
         </li>
 
-        <!-- Dropdown Menu -->
-        <li class="nav-item dropdown">
+        <% if (!currUser) { %>
+        <!-- Show login/register as separate items on small screens -->
+        <li class="nav-item d-lg-none">
+          <a class="nav-link custom-hover" href="/user/register"
+            >Register <i class="bi bi-person-add ms-2"></i>
+          </a>
+        </li>
+        <li class="nav-item d-lg-none">
+          <a class="nav-link custom-hover" href="/user/login"
+            >Login <i class="bi bi-door-open-fill ms-3"></i>
+          </a>
+        </li>
+        <% } %>
+
+        <!-- Dropdown Menu (Visible on Large Screens) -->
+        <li class="nav-item dropdown d-none d-lg-block">
           <a
             class="nav-link"
             href="#"
@@ -59,13 +77,13 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i class="bi bi-list" style="color: rgb(0, 0, 0)"></i>
+            <i class="bi bi-list"></i>
           </a>
           <ul
             class="dropdown-menu dropdown-menu-end custom-dropdown"
             aria-labelledby="navbarDropdown"
           >
-            <% if(!currUser) {%>
+            <% if (!currUser) { %>
             <li>
               <a class="dropdown-item custom-hover" href="/user/register"
                 >Register
@@ -78,7 +96,7 @@
                 <i class="bi bi-door-open-fill ms-3"></i>
               </a>
             </li>
-            <%}%> <% if(currUser) {%>
+            <% } %> <% if (currUser) { %>
             <li>
               <a class="dropdown-item custom-hover" href="/user/logout"
                 >Logout
@@ -88,11 +106,10 @@
             <li><hr class="dropdown-divider" /></li>
             <li>
               <a class="dropdown-item custom-hover" href="/listings/new">
-                <i class="ms-2"></i>
                 Hello @<%= currUser.name %>
               </a>
             </li>
-            <%}%>
+            <% } %>
           </ul>
         </li>
       </ul>

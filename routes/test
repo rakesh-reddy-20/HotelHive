@@ -1,0 +1,104 @@
+router.post("/", isLoggedIn, validateBooking, async (req, res) => {
+  try {
+    const {
+      listingId,
+      checkIn,
+      checkOut,
+      guests,
+      customerDetails,
+      guestsDetails,
+      arrivalTime,
+      specialRequests,
+      paymentMethod,
+      totalAmount,
+    } = req.body.booking;
+
+    // Verify listing
+    const foundListing = await Listing.findById(listingId);
+    if (!foundListing) {
+      return res.status(404).json({ error: "Listing not found" });
+    }
+
+    // Get user email from DB
+    const user = await User.findById(req.user._id);
+    if (!user || !user.email) {
+      return res.status(400).json({ error: "User email not found" });
+    }
+
+    // Create Booking
+    const booking = new Booking({
+      listing: listingId,
+      user: req.user._id,
+      checkIn,
+      checkOut,
+      guests,
+      customerDetails,
+      guestsDetails,
+      arrivalTime,
+      specialRequests,
+      paymentMethod,
+      totalAmount,
+    });
+
+    await pendingbooking.save();
+
+    // Send email to user
+    const mailOptions = {
+      from: "HotelHive <hotelhiveofficial@gmail.com>",
+      to: user.email,
+      subject: "Booking Confirmation - HotelHive",
+      html: `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+    <h2 style="color: #2c3e50;">Booking Confirmation – HotelHive</h2>
+    <p>Dear <strong>${customerDetails.name}</strong>,</p>
+
+    <p>Thank you for choosing <strong>HotelHive</strong>. We're pleased to confirm your booking:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Check-in:</td>
+        <td style="padding: 8px;">${new Date(checkIn).toDateString()}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Check-out:</td>
+        <td style="padding: 8px;">${new Date(checkOut).toDateString()}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">No. of Nights:</td>
+        <td style="padding: 8px;">${Math.ceil(
+          (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
+        )} night(s)</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Guests:</td>
+        <td style="padding: 8px;">${guests}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Payment Method:</td>
+        <td style="padding: 8px; text-transform: capitalize;">${paymentMethod}</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; font-weight: bold;">Total Amount:</td>
+        <td style="padding: 8px;">₹${Number(totalAmount).toFixed(2)}</td>
+      </tr>
+    </table>
+
+    <p style="margin-top: 20px;">If you have any special requests, our team will be happy to accommodate them.</p>
+
+    <p style="margin-top: 30px;">We look forward to hosting you.<br/><strong>HotelHive Team</strong></p>
+
+    <hr style="margin-top: 40px;"/>
+    <small style="color: #888;">This is an automated message. Please do not reply directly to this email.</small>
+  </div>
+`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    req.flash("success", "Hotel Booked successfully!");
+    res.redirect(`/listings/${listingId}`);
+  } catch (err) {
+    console.error("Booking error:", err);
+    res.status(500).json({ error: "Something went wrong with your booking." });
+  }
+});

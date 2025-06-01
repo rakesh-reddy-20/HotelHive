@@ -12,9 +12,9 @@
               best stays at <strong>unbeatable prices</strong>. Our seamless
               booking experience ensures that your perfect getaway is just a few
               clicks away.
-              <strong
-                >Relax, unwind, and let HotelHive take care of the rest!</strong
-              >
+              <strong>
+                Relax, unwind, and let HotelHive take care of the rest!
+              </strong>
             </p>
           </div>
 
@@ -140,6 +140,26 @@
                   </div>
                 </div>
 
+                <!-- Select role -->
+                <div class="col-12">
+                  <label for="role" class="form-label">
+                    Select Role <span class="text-danger">*</span>
+                  </label>
+                  <select
+                    class="form-select custom-input"
+                    name="register[role]"
+                    id="role"
+                    required
+                  >
+                    <option selected value="Customer">Customer</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+
+                  <div class="invalid-feedback">
+                    Please select a valid role.
+                  </div>
+                </div>
+
                 <!-- Username -->
                 <div class="col-12">
                   <label for="username" class="form-label"
@@ -205,6 +225,15 @@
                 </div>
               </div>
             </form>
+
+            <!-- Instruction Note -->
+            <div class="text-center mt-4">
+              <small class="text-muted">
+                <strong>Note:</strong> If you want admin role, please make sure
+                to select <strong>Admin</strong> from the "Select Role" dropdown
+                in the registration form.
+              </small>
+            </div>
 
             <div class="text-center mt-4">
               <p class="text-secondary">

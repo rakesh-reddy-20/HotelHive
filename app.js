@@ -18,6 +18,8 @@ const User = require("./models/user.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const dashboardRouter = require("./routes/dashboard.js");
+const bookingRouter = require("./routes/booking.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -36,6 +38,7 @@ const MONGO_URI = process.env.ATLASDB_URL;
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI);
+    // await mongoose.connect("mongodb://127.0.0.1/hotelhive");
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error(`Error connecting to DB: ${error.message}`);
@@ -98,6 +101,8 @@ app.use((req, res, next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/user", userRouter);
+app.use("/dashboard", dashboardRouter);
+app.use("/bookings", bookingRouter);
 
 // Unfound Pages
 app.all("*", (req, res) => {

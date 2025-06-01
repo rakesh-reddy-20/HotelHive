@@ -21,23 +21,20 @@
       >
     </a>
 
-    <!-- Navbar Toggler for Small Screens -->
+    <!-- Offcanvas Toggler Button for Small Screens -->
     <button
-      class="navbar-toggler"
+      class="btn d-lg-none"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#mobileMenu"
+      aria-controls="mobileMenu"
     >
-      <span class="navbar-toggler-icon"></span>
+      <i class="bi bi-list fs-3"></i>
     </button>
 
-    <!-- Collapsible Navbar -->
+    <!-- Regular Navbar for Large Screens -->
     <div
-      class="collapse navbar-collapse justify-content-end"
-      style="background-color: #f8f9fa"
+      class="collapse navbar-collapse justify-content-end d-none d-lg-flex"
       id="navbarNav"
     >
       <ul class="navbar-nav mb-2 mb-lg-0" style="gap: 10px">
@@ -47,40 +44,36 @@
         <li class="nav-item">
           <a class="nav-link custom-hover" href="/listings/contact">Contact</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link custom-hover" href="/listings/new"
-            >Add your hotel</a
-          >
-        </li>
 
-        <% if (!currUser) { %>
-        <!-- Show login/register as separate items on small screens -->
-        <li class="nav-item d-lg-none">
-          <a class="nav-link custom-hover" href="/user/register"
-            >Register <i class="bi bi-person-add ms-2"></i>
-          </a>
+        <!-- Search Bar -->
+        <li class="nav-item d-none d-lg-block">
+          <form
+            class="d-flex"
+            role="search"
+            action="/search"
+            method="GET"
+            style="position: relative"
+          >
+            <input
+              class="form-control me-2 rounded-pill ps-3 pe-5 shadow-none"
+              type="search"
+              name="query"
+              placeholder="Search Place!"
+              style="min-width: 220px"
+            />
+
+            <button
+              class="btn btn-outline-secondary position-absolute end-0 top-0 bottom-0 me-2 my-auto py-1 px-3 rounded-pill"
+              type="submit"
+              style="border: none; background-color: transparent"
+            >
+              <i class="bi bi-search"></i>
+            </button>
+          </form>
         </li>
-        <li class="nav-item d-lg-none">
-          <a class="nav-link custom-hover" href="/user/login"
-            >Login <i class="bi bi-door-open-fill ms-3"></i>
-          </a>
-        </li>
-        <% } else { %>
-        <!-- Show logout option on small screens -->
-        <li class="nav-item d-lg-none">
-          <a class="nav-link custom-hover" href="/user/logout"
-            >Logout <i class="bi bi-door-open-fill ms-3"></i>
-          </a>
-        </li>
-        <li class="nav-item d-lg-none">
-          <a class="nav-link custom-hover" href="/listings/new">
-            Hello @<%= currUser.name %>
-          </a>
-        </li>
-        <% } %>
 
         <!-- Dropdown Menu (Visible on Large Screens) -->
-        <li class="nav-item dropdown d-none d-lg-block">
+        <li class="nav-item dropdown">
           <a
             class="nav-link"
             href="#"
@@ -98,28 +91,29 @@
             <% if (!currUser) { %>
             <li>
               <a class="dropdown-item custom-hover" href="/user/register"
-                >Register
-                <i class="bi bi-person-add ms-2"></i>
-              </a>
+                >Register <i class="bi bi-person-add ms-2"></i
+              ></a>
             </li>
             <li>
               <a class="dropdown-item custom-hover" href="/user/login"
-                >Login
-                <i class="bi bi-door-open-fill ms-3"></i>
-              </a>
+                >Login <i class="bi bi-door-open-fill ms-2"></i
+              ></a>
             </li>
             <% } else { %>
             <li>
-              <a class="dropdown-item custom-hover" href="/user/logout"
-                >Logout
-                <i class="bi bi-door-open-fill ms-3"></i>
+              <a class="dropdown-item custom-hover" href="/dashboard/home">
+                Hello @<%= currUser.name %>
               </a>
             </li>
             <li><hr class="dropdown-divider" /></li>
+              <li>
+              <a class="dropdown-item custom-hover" href="/bookings/mybookings"
+                >My Bookings</a>
+            </li>
             <li>
-              <a class="dropdown-item custom-hover" href="/listings/new">
-                Hello @<%= currUser.name %>
-              </a>
+              <a class="dropdown-item custom-hover" href="/user/logout"
+                >Logout <i class="bi bi-door-open-fill ms-2"></i
+              ></a>
             </li>
             <% } %>
           </ul>
@@ -128,3 +122,60 @@
     </div>
   </div>
 </nav>
+
+<!-- Offcanvas Menu for Small Screens -->
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="mobileMenu"
+  aria-labelledby="mobileMenuLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/listings/aboutus">About Us</a>
+      </li>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/listings/contact">Contact</a>
+      </li>
+
+      <% if (!currUser) { %>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/user/register"
+          >Register <i class="bi bi-person-add ms-2"></i
+        ></a>
+      </li>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/user/login"
+          >Login <i class="bi bi-door-open-fill ms-2"></i
+        ></a>
+      </li>
+      <% } else { %>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/dashboard/home">
+          Hello @<%= currUser.name %>
+        </a>
+      </li>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/bookings/mybookings">
+          My Bookings
+        </a>
+      </li>
+      <li class="list-group-item border-bottom">
+        <a class="nav-link" href="/user/logout"
+          >Logout <i class="bi bi-door-open-fill ms-2"></i
+        ></a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</div>

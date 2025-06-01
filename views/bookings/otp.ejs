@@ -1,0 +1,87 @@
+<% layout("layouts/boilerplate.ejs") %>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div
+        class="col-sm-10 col-md-6 col-lg-4 border border-2 rounded-4 p-4 shadow bg-white"
+      >
+        <!-- Optional Logo/Branding -->
+        <div class="text-center mb-3">
+          <img src="/images/icon.png" alt="Logo" style="height: 40px" />
+        </div>
+
+        <!-- Page Heading -->
+        <h4 class="text-center fw-bold mb-3">Verify Your Booking</h4>
+
+        <!-- Error Message Block -->
+        <% if (typeof errorMessage !== 'undefined') { %>
+          <div class="alert alert-danger text-center">
+            <%= errorMessage %>
+          </div>
+        <% } %>
+
+        <% if (locals.error && error.length) { %>
+          <div class="alert alert-danger text-center">
+            <%= error[0] %>
+          </div>
+        <% } %>
+
+        <% if (locals.success && success.length) { %>
+          <div class="alert alert-success text-center">
+            <%= success[0] %>
+          </div>
+        <% } %>
+
+        <!-- OTP Form -->
+        <form
+          action="/bookings/verifyotp"
+          method="POST"
+          class="needs-validation"
+          novalidate
+        >
+          <input
+            type="hidden"
+            name="pendingBookingId"
+            value="<%= pendingBookingId %>"
+          />
+
+          <div class="mb-3">
+            <label for="otp" class="form-label">
+              Enter the OTP sent to your email
+            </label>
+            <input
+              type="text"
+              class="form-control text-center"
+              id="otp"
+              name="otp"
+              required
+              placeholder="6-digit OTP"
+              aria-label="OTP"
+              autofocus
+            />
+            <div class="invalid-feedback">
+              Please enter a valid 6-digit OTP.
+            </div>
+          </div>
+
+          <div class="d-grid mb-2">
+            <button type="submit" class="btn btn-warning fw-bold">
+              Verify & Pay
+            </button>
+          </div>
+        </form>
+
+        <!-- Resend OTP Link -->
+        <div class="text-center mt-2">
+          Didn't get the OTP?
+          <a
+            href="/bookings/resendotp/<%= pendingBookingId %>"
+            class="text-decoration-none fw-semibold"
+          >
+            Resend
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

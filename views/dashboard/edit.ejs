@@ -1,0 +1,210 @@
+<% layout("./layouts/dashboardbolilerplate.ejs") -%>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Manage Hotels</a></li>
+        <li class="breadcrumb-item active">Add Your Hotel</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              Update Hotel Registration Form
+              <i class="bi bi-file-earmark-text"></i>
+            </h5>
+
+            <!-- Floating Labels Form -->
+            <form
+              class="row g-3 needs-validation"
+              action="/dashboard/<%= editListing._id %>?_method=PUT"
+              method="POST"
+              novalidate
+            >
+              <!-- Title -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="sname"
+                    name="listing[title]"
+                    value="<%- editListing.title %>"
+                    placeholder="Enter a catchy title"
+                    required
+                    autofocus
+                  />
+                  <label for="sname">Hotel Title</label>
+                  <div class="invalid-feedback">
+                    Please enter a catchy title.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentDate"
+                    disabled
+                  />
+                  <label for="currentDay">Update Date</label>
+                </div>
+              </div>
+
+              <!-- Day -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentDay"
+                    disabled
+                  />
+                  <label for="currentDay">Update Day</label>
+                </div>
+              </div>
+
+              <!-- Time -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentTime"
+                    disabled
+                  />
+                  <label for="currentTime">Update Time</label>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <textarea
+                    class="form-control"
+                    name="listing[description]"
+                    value="<%- editListing.description %>"
+                    id="hotelDescription"
+                    rows="3"
+                    minlength="20"
+                    required
+                    aria-label="Hotel Description"
+                    placeholder="Provide a brief description"
+                    style="height: 120px"
+                  >
+<%- editListing.description %>
+                  </textarea>
+                  <label for="hotelDescription">
+                    Description (<small class="text-muted"
+                      >Minimum 20 characters</small
+                    >)
+                  </label>
+                  <div class="invalid-feedback">
+                    Please write about your hotel.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="listing[price]"
+                    value="<%- editListing.price %>"
+                    placeholder="Enter Price"
+                    required
+                    aria-label="Hotel Price"
+                  />
+                  <label for="Price">Price</label>
+                  <div class="invalid-feedback">Please enter the Price.</div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="listing[location]"
+                    value="<%- editListing.location %>"
+                    placeholder="Enter location"
+                    required
+                    aria-label="Hotel Location"
+                  />
+                  <label for="location">Location</label>
+                  <div class="invalid-feedback">Please enter the address.</div>
+                </div>
+              </div>
+
+              <!-- Country -->
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <select
+                    class="form-select"
+                    name="listing[country]"
+                    aria-label="Select Country"
+                    required
+                  >
+                    <option selected value="<%- editListing.title %>">
+                      <%- editListing.title %>
+                    </option>
+                    <% countries.forEach(country => { %>
+                    <option value="<%= country %>"><%= country %></option>
+                    <% }) %>
+                  </select>
+                  <label for="country">Country</label>
+                  <div class="invalid-feedback">Please choose a country.</div>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-warning">Update</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+            </form>
+            <!-- End Form -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  function updateDayAndTime() {
+    const now = new Date();
+
+    const dayOptions = { weekday: "long" }; // For the day
+    const timeOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    };
+    const dateOptions = { year: "numeric", month: "long", day: "numeric" }; // Remove the weekday
+
+    const day = now.toLocaleDateString("en-US", dayOptions);
+    const time = now.toLocaleTimeString("en-US", timeOptions);
+    const date = now.toLocaleDateString("en-US", dateOptions); // Just the date
+
+    document.getElementById("currentDay").value = day;
+    document.getElementById("currentTime").value = time;
+    document.getElementById("currentDate").value = date; // Just the date without the weekday
+  }
+
+  updateDayAndTime();
+  setInterval(updateDayAndTime, 1000); // update every second
+</script>

@@ -1,0 +1,88 @@
+<% layout("./layouts/dashboardbolilerplate.ejs") -%>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard/home">Home</a></li>
+        <li class="breadcrumb-item">Manage Hotels</li>
+        <li class="breadcrumb-item active">All Hotels</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              All Hotels <i class="bi bi-bookmark-star-fill"></i>
+            </h5>
+
+            <!-- Table with stripped rows -->
+            <div class="table-responsive">
+              <table class="table table-striped datatable">
+                <thead>
+                  <tr>
+                    <th><center>Slno.</center></th>
+                    <th><center>Name</center></th>
+                    <th><center>Price</center></th>
+                    <th><center>Location</center></th>
+                    <th><center>Country</center></th>
+                    <th><center>Show</center></th>
+                    <th><center>Update</center></th>
+                    <th><center>Action</center></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% let count = 1; %> <% allListings.forEach(function(listing,
+                  index) { %>
+                  <tr>
+                    <td><center><%= count++ %></center></td>
+                    <th scope="row"><center><%= listing.title %></center></th>
+                    <td><center><%= listing.price %></center></td>
+                    <td><center><%= listing.location %></center></td>
+                    <td><center><%= listing.country %></center></td>
+                    <td>
+                      <center>
+                        <a
+                          class="btn btn-success"
+                          href="/dashboard/<%= listing._id %>/showhotel"
+                        >
+                          <i class="bi bi-search"></i>
+                        </a>
+                      </center>
+                    </td>
+                    <td>
+                      <center>
+                        <a
+                          class="btn btn-warning"
+                          href="/dashboard/<%= listing._id %>/edit"
+                        >
+                          <i class="bi bi-pen"></i>
+                        </a>
+                      </center>
+                    </td>
+                    <td>
+                      <center>
+                        <a
+                          class="btn btn-danger"
+                          href="/dashboard/<%= listing._id %>/deletehotel"
+                          onclick="return confirm('Are you sure you want to delete this listing?')"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </a>
+                      </center>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

@@ -18,12 +18,33 @@ router
   .post(
     saveRedirectUrl,
     passport.authenticate("local", {
-      failureRedirect: "/user/login", // Ensure correct path
+      failureRedirect: "/users/login",
       failureFlash: true,
     }),
     async (req, res) => {
       req.flash("success", `Hello ${req.user.name}, Welcome to HotelHive!!!`);
-      const redirectUrl = res.locals.redirectUrl || "/listings";
+
+      let roleBasedRedirect;
+
+      // Handle redirection based on role
+      if (req.user.role === "Customer") {
+        roleBasedRedirect = "/listings";
+      } else if (req.user.role === "Owner") {
+        roleBasedRedirect = "/dashboard/home";
+      } else if (req.user.role === "Admin") {
+        roleBasedRedirect = "/admin/dashboard";
+      } else {
+        // If the role is unrecognized, log out the user and redirect to login with an error
+        console.error(`Unknown user role: ${req.user.role}`);
+        req.logout(() => {
+          req.flash("error", "Invalid user role. Please contact support.");
+          return res.redirect("/users/login");
+        });
+        return;
+      }
+
+      // Use redirectUrl from session if available, else role-based redirect
+      const redirectUrl = res.locals.redirectUrl || roleBasedRedirect;
       res.redirect(redirectUrl);
     }
   )

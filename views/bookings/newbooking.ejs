@@ -1,0 +1,431 @@
+<% layout("layouts/boilerplate.ejs") %>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-10 border border-2 rounded-4 p-4 shadow-sm bg-white">
+        <h3 class="text-center fw-bold mb-4">Book Your Stay</h3>
+
+        <form
+          id="bookingForm"
+          action="/bookings"
+          method="POST"
+          class="needs-validation"
+          novalidate
+        >
+          <!-- Dates -->
+          <div class="row mb-3">
+            <div class="col-md">
+              <label for="checkIn" class="form-label">Check-in Date </label>
+              <input
+                type="date"
+                class="form-control"
+                id="checkIn"
+                name="booking[checkIn]"
+                required
+                readonly
+                aria-label="Check-in Date"
+              />
+              <div class="invalid-feedback">
+                Please select a valid check-in date (today or later).
+              </div>
+            </div>
+            <div class="col-md">
+              <label for="checkOut" class="form-label">Check-out Date</label>
+              <input
+                type="date"
+                class="form-control"
+                id="checkOut"
+                name="booking[checkOut]"
+                required
+                readonly
+                aria-label="Check-out Date"
+              />
+              <div class="invalid-feedback" id="checkOutError">
+                Please select a valid check-out date (after check-in).
+              </div>
+            </div>
+            <div class="col-md">
+              <label for="totalDays" class="form-label">No of Days</label>
+              <input
+                type="number"
+                class="form-control"
+                id="totalDays"
+                name=""
+                readonly
+              />
+            </div>
+            <div class="col-md-2">
+              <label for="totalDays" class="form-label">Price per Night</label>
+              <input
+                type="number"
+                class="form-control"
+                id="pricePerNight"
+                disabled
+                value="<%= listing.price %>"
+                readonly
+              />
+            </div>
+
+            <div class="col-md">
+              <label for="guests" class="form-label"
+                >Number of Guests (<span style="color: red">max 8*</span
+                >)</label
+              >
+              <input
+                type="number"
+                class="form-control"
+                id="guests"
+                name="booking[guests]"
+                min="1"
+                max="8"
+                required
+                aria-label="Number of Guests"
+              />
+              <div class="invalid-feedback">
+                Please enter between 1 and 8 guests.
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Details -->
+          <h5 class="fw-semibold">Your Details</h5>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="custName" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="custName"
+                name="booking[customerDetails][name]"
+                required
+                aria-label="Your Name"
+              />
+              <div class="invalid-feedback">Please enter your name.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="custAadhaar" class="form-label">Aadhaar Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="custAadhaar"
+                name="booking[customerDetails][aadhaarNumber]"
+                required
+                pattern="\d{12}"
+                maxlength="12"
+                aria-label="Your Aadhaar Number"
+                aria-describedby="aadhaarHelp"
+              />
+              <div id="aadhaarHelp" class="form-text">
+                12 digit Aadhaar number only.
+              </div>
+              <div class="invalid-feedback">
+                Please enter a valid 12-digit Aadhaar number.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="custAge" class="form-label">Age</label>
+              <input
+                type="number"
+                class="form-control"
+                id="custAge"
+                name="booking[customerDetails][age]"
+                min="0"
+                required
+                aria-label="Your Age"
+              />
+              <div class="invalid-feedback">
+                Please enter a valid age (0 or more).
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="custGender" class="form-label">Gender</label>
+              <select
+                class="form-select"
+                id="custGender"
+                name="booking[customerDetails][gender]"
+                required
+                aria-label="Your Gender"
+              >
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <div class="invalid-feedback">Please select your gender.</div>
+            </div>
+          </div>
+
+          <!-- Additional Guest Fields -->
+          <h5 class="fw-semibold">Guest Details</h5>
+          <div id="guest-fields" class="mb-4"></div>
+
+          <!-- Additional Booking Fields -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <label for="arrivalTime" class="form-label">Arrival Time</label>
+              <input
+                type="time"
+                class="form-control"
+                id="arrivalTime"
+                name="booking[arrivalTime]"
+                aria-label="Arrival Time"
+              />
+            </div>
+            <div class="col-md-4">
+              <label for="totalAmount" class="form-label">Total Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="totalAmount"
+                name="booking[totalAmount]"
+                min="0"
+                step="0.01"
+                required
+                aria-label="Total Amount"
+              />
+              <div class="invalid-feedback">
+                Please enter a valid total amount.
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label for="paymentMethod" class="form-label"
+                >Payment Method</label
+              >
+              <select
+                class="form-select"
+                id="paymentMethod"
+                name="booking[paymentMethod]"
+                required
+                aria-label="Payment Method"
+              >
+                <option value="" disabled selected>
+                  Select Payment Method
+                </option>
+                <option value="creditCard">Credit Card</option>
+                <option value="upi">UPI</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a payment method.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="specialRequests" class="form-label"
+              >Special Requests</label
+            >
+            <textarea
+              class="form-control"
+              id="specialRequests"
+              name="booking[specialRequests]"
+              rows="3"
+              placeholder="Any special requests?"
+              aria-label="Special Requests"
+            ></textarea>
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            id="listingId"
+            name="booking[listingId]"
+            value="<%= listing._id %>"
+            required
+            aria-label="listingId"
+          />
+
+          <!-- Buttons -->
+          <div class="d-flex justify-content-between">
+            <a href="/listings/<%= listing._id %>" class="btn btn-secondary"
+              >Back</a
+            >
+            <button
+              type="submit"
+              class="btn btn-warning"
+              id="submitBtn"
+              disabled
+            >
+              Book Now
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Validation JS + Dynamic Guest Fields + Custom Validations -->
+  <script>
+    (() => {
+      "use strict";
+
+      const form = document.getElementById("bookingForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const checkInInput = document.getElementById("checkIn");
+      const checkOutInput = document.getElementById("checkOut");
+      const guestsInput = document.getElementById("guests");
+      const guestFieldsContainer = document.getElementById("guest-fields");
+      const totalAmountInput = document.getElementById("totalAmount");
+      const totalDaysInput = document.getElementById("totalDays");
+
+      const pricePerNightInput = document.querySelector(
+        "input[disabled][value]"
+      );
+      const pricePerNight = parseFloat(pricePerNightInput?.value); // safely fetch the value
+
+      let debounceTimeout;
+
+      function validateDates() {
+        const checkInDate = new Date(checkInInput.value);
+        const checkOutDate = new Date(checkOutInput.value);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        let valid = true;
+
+        if (!checkInInput.value || checkInDate < today) {
+          checkInInput.setCustomValidity("Invalid");
+          valid = false;
+        } else {
+          checkInInput.setCustomValidity("");
+        }
+
+        if (!checkOutInput.value || checkOutDate <= checkInDate) {
+          checkOutInput.setCustomValidity("Invalid");
+          valid = false;
+        } else {
+          checkOutInput.setCustomValidity("");
+        }
+
+        return valid;
+      }
+
+      function toggleSubmit() {
+        if (!validateDates()) {
+          submitBtn.disabled = true;
+          return;
+        }
+        submitBtn.disabled = !form.checkValidity();
+      }
+
+      function generateGuestFields() {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+          const count = parseInt(guestsInput.value) || 0;
+          guestFieldsContainer.innerHTML = "";
+
+          for (let i = 0; i < count - 1 && i < 7; i++) {
+            const guestHTML = `
+          <div class="border rounded-4 p-3 mb-4 shadow-sm bg-light-subtle">
+            <h6 class="mb-3 fw-semibold">Guest ${i + 1}</h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="booking[guestsDetails][${i}][name]" required />
+                <div class="invalid-feedback">Please enter guest name.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Aadhaar Number</label>
+                <input type="text" class="form-control" name="booking[guestsDetails][${i}][aadhaarNumber]" pattern="\\d{12}" maxlength="12" required />
+                <div class="invalid-feedback">Please enter valid 12-digit Aadhaar number.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Age</label>
+                <input type="number" class="form-control" name="booking[guestsDetails][${i}][age]" min="0" required />
+                <div class="invalid-feedback">Please enter valid age.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Gender</label>
+                <select class="form-select" name="booking[guestsDetails][${i}][gender]" required>
+                  <option disabled selected value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+                <div class="invalid-feedback">Please select gender.</div>
+              </div>
+            </div>
+          </div>
+        `;
+            guestFieldsContainer.insertAdjacentHTML("beforeend", guestHTML);
+          }
+          toggleSubmit();
+        }, 300);
+      }
+
+      function calculateStayAndTotal() {
+        const checkInDate = new Date(checkInInput.value);
+        const checkOutDate = new Date(checkOutInput.value);
+
+        if (
+          checkInInput.value &&
+          checkOutInput.value &&
+          checkOutDate > checkInDate
+        ) {
+          const diffTime = checkOutDate - checkInDate;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+          const total = diffDays * pricePerNight;
+
+          totalAmountInput.value = total.toFixed(2);
+          totalDaysInput.value = diffDays;
+        } else {
+          totalAmountInput.value = "";
+          totalDaysInput.value = "";
+        }
+      }
+
+      // Event listeners
+      checkInInput.addEventListener("change", () => {
+        validateDates();
+        toggleSubmit();
+        calculateStayAndTotal();
+      });
+
+      checkOutInput.addEventListener("change", () => {
+        validateDates();
+        toggleSubmit();
+        calculateStayAndTotal();
+      });
+
+      guestsInput.addEventListener("input", () => {
+        generateGuestFields();
+      });
+
+      form.addEventListener("input", () => {
+        toggleSubmit();
+      });
+
+      form.addEventListener(
+        "submit",
+        (event) => {
+          if (!form.checkValidity() || !validateDates()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+        },
+        false
+      );
+
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const checkInParam = params.get("checkIn");
+        const checkOutParam = params.get("checkOut");
+
+        if (checkInParam) {
+          checkInInput.value = checkInParam;
+        }
+        if (checkOutParam) {
+          checkOutInput.value = checkOutParam;
+        }
+        console.log(checkInParam);
+        console.log(checkOutParam);
+
+        validateDates();
+        toggleSubmit();
+        calculateStayAndTotal();
+      })();
+
+      toggleSubmit();
+    })();
+  </script>
+</body>

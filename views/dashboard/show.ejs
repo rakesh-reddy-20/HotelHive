@@ -1,0 +1,86 @@
+<% layout("./layouts/dashboardbolilerplate.ejs") -%>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav class="d-flex justify-content-between align-items-center">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Manage Hotels</a></li>
+        <li class="breadcrumb-item active">Show Hotel</li>
+      </ol>
+      <a href="/dashboard/allhotels" class="btn btn-warning">
+        <i class="bi bi-arrow-left"></i> Back to All Hotels
+      </a>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left Columns -->
+      <div class="col-lg-8">
+        <div class="row">
+          <!-- Title Card -->
+          <div class="col-xxl-12 mb-2">
+            <div class="card info-card">
+              <div class="card-body">
+                <h5 class="card-title">Hotel <span>| Title</span></h5>
+                <p class="mt-2"><%= listing.title %></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Card -->
+          <div class="col-xxl-12 mb-4">
+            <div class="card info-card">
+              <div class="card-body">
+                <h5 class="card-title">Hotel <span>| Image</span></h5>
+                <img
+                  src="<%= listing.image ? listing.image.url : '/images/default.jpg' %>"
+                  class="card-img-top mt-3"
+                  alt="Hotel Image"
+                  style="height: 400px; object-fit: cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Left Columns -->
+
+      <!-- Right Columns -->
+      <div class="col-lg-4">
+        <!-- Description Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Hotel <span>| Description</span></h5>
+            <p><%= listing.description %></p>
+          </div>
+        </div>
+
+        <!-- Information Card -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Hotel <span>| Inforation</span></h5>
+            <p>
+              <strong>Price:</strong> &#8377;<%=
+              listing.price?.toLocaleString("en-IN") || "N/A" %>/-
+            </p>
+            <p><strong>Location:</strong> <%= listing.location %></p>
+            <p><strong>Country:</strong> <%= listing.country %></p>
+          </div>
+        </div>
+
+        <!-- Owner Info Card -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Owner <span>| Information</span></h5>
+            <p><strong>Name:</strong> <%= listing.owner.name %></p>
+            <p><strong>Contact:</strong> <%= listing.owner.contact %></p>
+          </div>
+        </div>
+      </div>
+      <!-- End Right Columns -->
+    </div>
+  </section>
+</main>

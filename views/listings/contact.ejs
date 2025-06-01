@@ -1,35 +1,113 @@
 <% layout("./layouts/boilerplate.ejs") -%>
 
 <body>
-  <!-- Contact 1 - Bootstrap Brain Component -->
-  <section class="bg-light py-3 py-md-5 mt-5">
+  <!-- Contact Us Section -->
+  <section class="bg-light py-5 mt-5">
     <div class="container">
-      <div class="row justify-content-md-center">
-        <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-          <h2 class="mb-4 display-5 text-center">Contact Us</h2>
-          <p class="text-secondary mb-4 text-center">
-            Have questions? Reach out to us, and we'll get back to you as soon
-            as possible.
+      <div class="row justify-content-center">
+        <!-- Contact Info -->
+        <div class="col-lg-5 mb-5 mb-lg-0">
+          <h2 class="fw-bold mb-3">Contact HotelHive</h2>
+          <p class="text-muted mb-4">
+            We'd love to hear from you! Reach out to us for any queries,
+            support, or feedback.
           </p>
-          <div class="text-center">
-            <p>
-              <i class="bi bi-envelope-fill"></i>
-              <a
-                href="mailto:support@hotelhive.com"
-                class="text-decoration-none"
-                >support@hotelhive.com</a
-              >
-            </p>
-            <p>
-              <i class="bi bi-telephone-fill"></i>
-              +123-456-7890
-            </p>
-            <p>
-              <i class="bi bi-geo-alt-fill"></i>
-              123 HotelHive Street, City, Country
-            </p>
+
+          <div class="mb-4">
+            <div class="d-flex align-items-start mb-3">
+              <i class="bi bi-envelope-fill text-primary fs-4 me-3"></i>
+              <div>
+                <h6 class="mb-1 fw-semibold">Email</h6>
+                <a
+                  href="mailto:support@hotelhive.com"
+                  class="text-decoration-none text-muted"
+                >
+                  support@hotelhive.com
+                </a>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+              <i class="bi bi-telephone-fill text-success fs-4 me-3"></i>
+              <div>
+                <h6 class="mb-1 fw-semibold">Phone</h6>
+                <p class="text-muted mb-0">+123-456-7890</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+              <i class="bi bi-geo-alt-fill text-danger fs-4 me-3"></i>
+              <div>
+                <h6 class="mb-1 fw-semibold">Address</h6>
+                <p class="text-muted mb-0">
+                  123 HotelHive Street, City, Country
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start">
+              <i class="bi bi-clock-fill text-warning fs-4 me-3"></i>
+              <div>
+                <h6 class="mb-1 fw-semibold">Working Hours</h6>
+                <p class="text-muted mb-0">Mon – Sat: 9:00 AM – 6:00 PM</p>
+                <p class="text-muted mb-0">Sunday: Closed</p>
+              </div>
+            </div>
           </div>
-          <hr class="w-50 mx-auto mb-4 border-dark-subtle" />
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-md-5">
+              <h5 class="fw-semibold mb-4">Send us a message</h5>
+              <form action="/contact" method="POST">
+                <div class="mb-3">
+                  <label for="name" class="form-label">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="subject" class="form-label">Subject</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="subject"
+                    name="subject"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="message" class="form-label">Message</label>
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    name="message"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>

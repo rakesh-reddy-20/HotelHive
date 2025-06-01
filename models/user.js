@@ -18,10 +18,16 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Email is required"],
     trim: true,
-    unique: true, // Ensure unique emails
+    unique: true,
+  },
+  role: {
+    type: String,
+    enum: ["Customer", "Owner"],
+    default: "Customer",
   },
 });
 
+// Passport plugin will handle username, hash, salt, etc.
 userSchema.plugin(passportLocalMongoose);
 
 const User = mongoose.model("User", userSchema);

@@ -1,0 +1,96 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <!-- Dashboard -->
+    <li class="nav-item">
+      <a class="nav-link" href="/dashboard/home">
+        <i class="bi bi-columns-gap"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+
+    <!-- Settings -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-toggle="collapse" href="#setting">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+        <i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul
+        id="setting"
+        class="nav-content collapse"
+        data-bs-parent="#sidebar-nav"
+      >
+        <li>
+          <a href="/dashboard/new">
+            <i class="bi bi-circle"></i>
+            <span>Create User</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Manage Hotels -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-toggle="collapse" href="#hotel">
+        <i class="bi bi-buildings"></i>
+        <span>Manage Hotels</span>
+        <i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="hotel" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="/dashboard/new">
+            <i class="bi bi-circle"></i>
+            <span>Add Hotel</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/allhotels">
+            <i class="bi bi-circle"></i>
+            <span>Show All Hotels</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Manage Rooms -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-toggle="collapse" href="#room">
+        <i class="bi bi-calendar-week"></i>
+        <span>Manage Rooms</span>
+        <i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="room" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="/dashboard/newroom">
+            <i class="bi bi-circle"></i>
+            <span>Add Room</span>
+          </a>
+        </li>
+        <li>
+          <a href="/dashboard/allrooms">
+            <i class="bi bi-circle"></i>
+            <span>Show All Rooms</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <!-- Pages Section Heading -->
+    <li class="nav-heading">Pages</li>
+
+    <!-- home page -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/listings">
+        <i class="bi bi-house"></i>
+        <span>Home Page</span>
+      </a>
+    </li>
+    <!-- Logout -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="/user/logout">
+        <i class="bi bi-door-open"></i>
+        <span>Log Out</span>
+      </a>
+    </li>
+  </ul>
+</aside>

@@ -1,0 +1,149 @@
+<% layout("./layouts/boilerplate.ejs") -%>
+<style>
+  .panel-box {
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  .project-image {
+    background-color: #fbb6c2;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+    border-radius: 10px;
+  }
+  .detail-item {
+    margin-bottom: 8px;
+  }
+  .detail-item strong {
+    min-width: 80px;
+    display: inline-block;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="row g-4">
+    <!-- Left Column -->
+    <div class="col-md-6">
+      <div class="panel-box mb-4">
+        <h5 class="fw-bold mb-3">BOOKING DETAILS</h5>
+        <p>
+          Thank you for choosing to stay with us. Below are the details of your
+          reservation. Please review the information carefully and contact us in
+          advance for any special requirements or corrections.
+        </p>
+      </div>
+
+      <!-- Customer Details Panel -->
+      <div class="panel-box mb-4">
+        <h5 class="fw-semibold mb-3">Customer Information</h5>
+        <div class="detail-item">
+          <strong>Customer Name:</strong> <%= booking.customerDetails.name %>
+        </div>
+        <div class="detail-item">
+          <strong>Aadhaar:</strong> <%= booking.customerDetails.aadhaarNumber %>
+        </div>
+        <div class="detail-item">
+          <strong>Gender:</strong> <%= booking.customerDetails.gender %>
+        </div>
+        <div class="detail-item">
+          <strong>Age:</strong> <%= booking.customerDetails.age %>
+        </div>
+        <div class="detail-item">
+          <strong>Total Guests:</strong> <%= booking.guests %>
+        </div>
+      </div>
+
+      <!-- Payment & Booking Details Panel -->
+      <div class="panel-box mb-4">
+        <h5 class="fw-semibold mb-3">Booking & Payment Details</h5>
+        <div class="detail-item">
+          <strong>Check-in:</strong>
+          <%= new Date(booking.checkIn).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+        </div>
+        <div class="detail-item">
+          <strong>Check-out:</strong>
+          <%= new Date(booking.checkOut).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+        </div>
+        <div class="detail-item">
+          <strong>Arrival Time:</strong> <%= booking.arrivalTime || "Not specified" %>
+        </div>
+        <div class="detail-item">
+          <strong>Special Requests:</strong> <%= booking.specialRequests || "None" %>
+        </div>
+        <div class="detail-item">
+          <strong>Payment Method:</strong> <%= booking.paymentMethod %>
+        </div>
+        <div class="detail-item">
+          <strong>Total Amount:</strong> ₹<%= booking.totalAmount %>/-
+        </div>
+      </div>
+
+      <div class="panel-box d-flex align-items-center gap-3">
+        <span><strong>Share:</strong></span>
+        <a href="#" class="text-primary"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-info"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="text-success"><i class="bi bi-whatsapp"></i></a>
+        <a href="#" class="text-secondary"><i class="bi bi-telegram"></i></a>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-md-6">
+      <div class="panel-box mb-4 p-0 overflow-hidden">
+        <img
+          src="<%= booking.listing.image.url %>"
+          alt="Hotel Image"
+          class="img-fluid w-100"
+          style="height: 300px; object-fit: cover;"
+        />
+      </div>
+
+      <div class="panel-box mb-4">
+        <div class="panel-box mb-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div><strong>Hotel Name:</strong> <%= booking.listing.title %></div>
+    <a href="/listings" class="btn btn-secondary">Back</a>
+  </div>
+        <hr />
+        <div><strong>Booked By:</strong> <%= booking.customerDetails.name %></div>
+        <div><strong>Contact:</strong> <%= booking.user?.contact || "N/A" %></div>
+      </div>
+
+      <!-- All Guests Panel -->
+      <div class="panel-box mb-4">
+        <h6 class="fw-bold mb-3">GUESTS INFORMATION</h6>
+
+        <!-- Main Customer -->
+        <div class="mb-3">
+          <strong>Main Guest:</strong><br />
+          <%= booking.customerDetails.name %> |
+          Aadhaar: <%= booking.customerDetails.aadhaarNumber %> |
+          Age: <%= booking.customerDetails.age %> |
+          Gender: <%= booking.customerDetails.gender %>
+        </div>
+
+        <!-- Additional Guests -->
+        <% if (booking.guestsDetails && booking.guestsDetails.length > 0) { %>
+          <% booking.guestsDetails.forEach((guest, index) => { %>
+            <div class="mb-2">
+              <strong>Guest <%= index + 1 %>:</strong><br />
+              <%= guest.name %> |
+              Aadhaar: <%= guest.aadhaarNumber %> |
+              Age: <%= guest.age %> |
+              Gender: <%= guest.gender %>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div>No additional guests.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

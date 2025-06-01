@@ -21,3 +21,23 @@
     );
   });
 })();
+
+function updateDateTime() {
+  const dateElem = document.getElementById("currentDate");
+  const timeElem = document.getElementById("currentTime");
+
+  const now = new Date();
+
+  // Format date (e.g., 17 May 2025)
+  const dateOptions = { day: "numeric", month: "short", year: "numeric" };
+  const formattedDate = now.toLocaleDateString("en-US", dateOptions);
+
+  // Format time (e.g., 09:45:30 AM)
+  const formattedTime = now.toLocaleTimeString("en-US");
+
+  dateElem.textContent = formattedDate;
+  timeElem.textContent = formattedTime;
+}
+
+setInterval(updateDateTime, 1000); // Update every second
+window.onload = updateDateTime; // Initialize on load

@@ -1,0 +1,224 @@
+<% layout("./layouts/dashboardbolilerplate.ejs") -%>
+<main id="main" class="main">
+  <div class="pagetitle">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/dashboard/home">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Manage Hotels</a></li>
+        <li class="breadcrumb-item active">Add Your Hotel</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">
+              Hotel Registration Form <i class="bi bi-file-earmark-text"></i>
+            </h5>
+
+            <!-- Floating Labels Form -->
+            <form
+              class="row g-3 needs-validation"
+              action="/dashboard/upload"
+              method="POST"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <!-- Title -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="sname"
+                    name="listing[title]"
+                    placeholder="Enter a catchy title"
+                    required
+                    autofocus
+                  />
+                  <label for="sname">Hotel Title</label>
+                  <div class="invalid-feedback">
+                    Please enter a catchy title.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Date -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentDate"
+                    disabled
+                  />
+                  <label for="currentDay">Upload Date</label>
+                </div>
+              </div>
+
+              <!-- Day -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentDay"
+                    disabled
+                  />
+                  <label for="currentDay">Upload Day</label>
+                </div>
+              </div>
+
+              <!-- Time -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="currentTime"
+                    disabled
+                  />
+                  <label for="currentTime">Upload Time</label>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-md-12">
+                <div class="form-floating">
+                  <textarea
+                    class="form-control"
+                    name="listing[description]"
+                    id="hotelDescription"
+                    rows="3"
+                    minlength="20"
+                    required
+                    aria-label="Hotel Description"
+                    placeholder="Provide a brief description"
+                    style="height: 120px"
+                  ></textarea>
+                  <label for="hotelDescription">
+                    Description (<small class="text-muted"
+                      >Minimum 20 characters</small
+                    >)
+                  </label>
+                  <div class="invalid-feedback">
+                    Please write about your hotel.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div class="col-md-2">
+                <div class="form-floating">
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="listing[price]"
+                    placeholder="Enter Price"
+                    required
+                    aria-label="Hotel Price"
+                  />
+                  <label for="Price">Price</label>
+                  <div class="invalid-feedback">Please enter the Price.</div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="listing[location]"
+                    placeholder="Enter location"
+                    required
+                    aria-label="Hotel Location"
+                  />
+                  <label for="location">Location</label>
+                  <div class="invalid-feedback">Please enter the address.</div>
+                </div>
+              </div>
+
+              <!-- Country -->
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <select
+                    class="form-select"
+                    name="listing[country]"
+                    aria-label="Select Country"
+                    required
+                  >
+                    <option value="">-- Select Country --</option>
+                    <% countries.forEach(country => { %>
+                    <option value="<%= country %>"><%= country %></option>
+                    <% }) %>
+                  </select>
+                  <label for="country">Country</label>
+                  <div class="invalid-feedback">Please choose a country.</div>
+                </div>
+              </div>
+
+              <!-- Image Upload -->
+              <div class="col-md-3">
+                <div class="col-md-12">
+                  <div class="">
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="hotelImage"
+                      name="listing[image]"
+                      placeholder="Enter image link"
+                      aria-label="Hotel Image URL"
+                      required
+                    />
+                    <label for="image"
+                      >Upload Image
+                      <span style="color: red">(Only .jpeg files)</span></label
+                    >
+                    <div class="invalid-feedback">Please choose a photo .</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Add Hotel</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+              </div>
+            </form>
+            <!-- End Form -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  function updateDayAndTime() {
+    const now = new Date();
+
+    const dayOptions = { weekday: "long" }; // For the day
+    const timeOptions = {
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    };
+    const dateOptions = { year: "numeric", month: "long", day: "numeric" }; // Remove the weekday
+
+    const day = now.toLocaleDateString("en-US", dayOptions);
+    const time = now.toLocaleTimeString("en-US", timeOptions);
+    const date = now.toLocaleDateString("en-US", dateOptions); // Just the date
+
+    document.getElementById("currentDay").value = day;
+    document.getElementById("currentTime").value = time;
+    document.getElementById("currentDate").value = date; // Just the date without the weekday
+  }
+
+  updateDayAndTime();
+  setInterval(updateDayAndTime, 1000); // update every second
+</script>

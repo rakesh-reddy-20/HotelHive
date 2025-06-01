@@ -79,7 +79,7 @@ module.exports.allBookings = async (req, res) => {
     const bookings = await Booking.find({ user: req.user._id })
       .populate("listing") // optional: shows hotel name, etc.
       .sort({ checkIn: -1 });
-    res.render("bookings/myBookings", { bookings });
+    res.render("bookings/mybookings", { bookings });
   } catch (err) {
     res.status(500).send("Error loading your bookings");
   }

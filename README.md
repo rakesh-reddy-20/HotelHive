@@ -42,10 +42,12 @@
 ---
 
 ## 🗂️ .env Folder
-MONGO_URI=
-JWT_SECRET=
-OTP_EMAIL_USER=
-OTP_EMAIL_PASS=
+- MONGO_URI=
+- JWT_SECRET=
+- OTP_EMAIL_USER=
+- OTP_EMAIL_PASS=
+
+---
 
 🧑‍💻 Author
 HotelHive was crafted with care by R Rakesh Reddy.

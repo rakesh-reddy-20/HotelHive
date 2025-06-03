@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-
 const wrapAsync = require("../utils/wrapAsync.js");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware.js");
@@ -18,7 +17,7 @@ router
   .post(
     saveRedirectUrl,
     passport.authenticate("local", {
-      failureRedirect: "/users/login",
+      failureRedirect: "users/login",
       failureFlash: true,
     }),
     async (req, res) => {
@@ -34,16 +33,13 @@ router
       } else if (req.user.role === "Admin") {
         roleBasedRedirect = "/admin/dashboard";
       } else {
-        // If the role is unrecognized, log out the user and redirect to login with an error
-        console.error(`Unknown user role: ${req.user.role}`);
+        // role is unrecognized, log out the user and redirect to login with an error
         req.logout(() => {
           req.flash("error", "Invalid user role. Please contact support.");
-          return res.redirect("/users/login");
+          return res.render("users/login");
         });
         return;
       }
-
-      // Use redirectUrl from session if available, else role-based redirect
       const redirectUrl = res.locals.redirectUrl || roleBasedRedirect;
       res.redirect(redirectUrl);
     }

@@ -10,8 +10,10 @@ module.exports.renderBookingForm = async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id);
   if (!listing) {
-    return res.status(404).send("Listing not found");
+    req.flash("error", "Hotel not found!");
+    return res.redirect(`/listings`);
   }
+  req.flash("success", "Fill your details!");
   res.render("bookings/newbooking", { listing });
 };
 
@@ -75,78 +77,72 @@ module.exports.checkAvability = async (req, res) => {
 
 // show all bookings
 module.exports.allBookings = async (req, res) => {
-  try {
-    const bookings = await Booking.find({ user: req.user._id })
-      .populate("listing") // optional: shows hotel name, etc.
-      .sort({ checkIn: -1 });
-    res.render("bookings/mybookings", { bookings });
-  } catch (err) {
-    res.status(500).send("Error loading your bookings");
-  }
+  const bookings = await Booking.find({ user: req.user._id })
+    .populate("listing")
+    .sort({ checkIn: -1 });
+  res.render("bookings/mybookings", { bookings });
 };
 
 // store in pending booking
 module.exports.pendingBooking = async (req, res) => {
-  try {
-    const {
-      listingId,
-      checkIn,
-      checkOut,
-      guests,
-      customerDetails,
-      guestsDetails,
-      arrivalTime,
-      specialRequests,
-      paymentMethod,
-      totalAmount,
-    } = req.body.booking;
+  const {
+    listingId,
+    checkIn,
+    checkOut,
+    guests,
+    customerDetails,
+    guestsDetails,
+    arrivalTime,
+    specialRequests,
+    paymentMethod,
+    totalAmount,
+  } = req.body.booking;
 
-    // Check listing existence
-    const foundListing = await Listing.findById(listingId);
-    if (!foundListing) {
-      return res.status(404).json({ error: "Listing not found" });
-    }
-
-    // Check user email
-    const user = await User.findById(req.user._id);
-    if (!user || !user.email) {
-      return res.status(400).json({ error: "User email not found" });
-    }
-
-    // Generate OTP
-    const otp = generateOTP();
-    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
-
-    // Create and save pending booking
-    const pendingBooking = new PendingBooking({
-      listing: listingId,
-      user: req.user._id,
-      checkIn,
-      checkOut,
-      guests,
-      customerDetails,
-      guestsDetails,
-      arrivalTime,
-      specialRequests,
-      paymentMethod,
-      totalAmount,
-      otp,
-      otpExpiresAt,
-    });
-
-    await pendingBooking.save();
-
-    // Send OTP
-    await sendOTPEmail(user.email, user.name, otp);
-
-    req.flash("success", "OTP send successfully!");
-    // Respond to client
-    res.render("bookings/otp", {
-      pendingBookingId: pendingBooking._id,
-    });
-  } catch (err) {
-    res.status(500).json({ error: "Something went wrong with your booking." });
+  // Check listing existence
+  const foundListing = await Listing.findById(listingId);
+  if (!foundListing) {
+    req.flash("error", "Hotel not avaliable!");
+    res.redirect("/listings");
   }
+
+  // Check user email
+  const user = await User.findById(req.user._id);
+  if (!user || !user.email) {
+    req.flash("error", "User doesnot have proper email!");
+    res.redirect("/listings");
+  }
+
+  // Generate OTP
+  const otp = generateOTP();
+  const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+  // Create and save pending booking
+  const pendingBooking = new PendingBooking({
+    listing: listingId,
+    user: req.user._id,
+    checkIn,
+    checkOut,
+    guests,
+    customerDetails,
+    guestsDetails,
+    arrivalTime,
+    specialRequests,
+    paymentMethod,
+    totalAmount,
+    otp,
+    otpExpiresAt,
+  });
+
+  await pendingBooking.save();
+
+  // Send OTP
+  await sendOTPEmail(user.email, user.name, otp);
+
+  req.flash("success", "OTP send successfully!");
+  // Respond to client
+  res.render("bookings/otp", {
+    pendingBookingId: pendingBooking._id,
+  });
 };
 
 // verify otp
@@ -225,7 +221,8 @@ module.exports.resendOtp = async (req, res) => {
 
   const user = await User.findById(req.user._id);
   if (!user || !user.email) {
-    return res.status(400).json({ error: "User email not found" });
+    req.flash("error", "User doesnot have an email.");
+    return res.redirect("/listings");
   }
 
   // Send OTP email
@@ -244,7 +241,7 @@ module.exports.finalBooking = async (req, res) => {
   const pendingBooking = await PendingBooking.findById(pendingBookingId);
   if (!pendingBooking) {
     req.flash("error", "Booking not found or already completed.");
-    return res.redirect("/some-error-page");
+    return res.redirect("/lisitngs");
   }
 
   // Save to confirmed bookings
@@ -267,4 +264,70 @@ module.exports.finalBooking = async (req, res) => {
 
   req.flash("success", "Payment successful! Booking confirmed.");
   res.redirect(`/bookings/confirmation/${booking._id}`);
+};
+
+// Confirmation page
+module.exports.finalConfirmation = async (req, res) => {
+  const booking = await Booking.findById(req.params.id)
+    .populate("listing")
+    .populate("user");
+
+  if (!booking) {
+    req.flash("error", "Booking not found.");
+    return res.redirect("/listings");
+  }
+
+  const userEmail = booking.user?.email;
+  if (userEmail) {
+    await emailConfirmation(userEmail, booking);
+  }
+  req.flash(
+    "success",
+    "Booking Confirmed. Thankyou for booking with HotelHive!"
+  );
+  res.render("bookings/confirmation", { booking });
+};
+
+// Show booking page
+module.exports.showBooking = async (req, res) => {
+  const { id } = req.params;
+
+  const booking = await Booking.findById(id)
+    .populate("listing")
+    .populate("user"); // populate user as well
+
+  if (!booking) {
+    req.flash("error", "Booking not found.");
+    return res.redirect("/bookings/mybookings");
+  }
+
+  res.render("bookings/show", { booking });
+};
+
+// Cancel booking
+module.exports.cancelBooking = async (req, res) => {
+  const bookingId = req.params.id;
+
+  const booking = await Booking.findById(bookingId)
+    .populate("listing")
+    .populate("user");
+
+  if (!booking) {
+    req.flash("error", "Booking not found.");
+    return res.redirect("/listings");
+  }
+
+  // Send cancellation email before deletion
+  if (booking.user?.email) {
+    try {
+      await CancellationEmail(booking.user.email, booking);
+    } catch (err) {
+      req.flash("error", "Cannot send email of Hotel Cancelation!");
+    }
+  }
+
+  await Booking.findByIdAndDelete(bookingId);
+
+  req.flash("success", "Booking Canceled.");
+  res.redirect("/bookings/mybookings");
 };

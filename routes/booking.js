@@ -16,7 +16,6 @@ const validateBooking = (req, res, next) => {
 
   if (error) {
     const errMsg = error.details.map((el) => el.message).join(", ");
-    console.error("Validation error:", errMsg);
     return next(new ExpressError(400, errMsg));
   }
 
@@ -49,46 +48,13 @@ router.post(
 router.post("/verifyotp", isLoggedIn, wrapAsync(bookingController.verifyOtp));
 
 // Example Express route handler after booking confirmed
-router.get("/confirmation/:id", async (req, res) => {
-  try {
-    const booking = await Booking.findById(req.params.id)
-      .populate("listing")
-      .populate("user"); // populate user to access email
+router.get(
+  "/confirmation/:id",
+  isLoggedIn,
+  wrapAsync(bookingController.finalConfirmation)
+);
 
-    if (!booking) {
-      return res.status(404).send("Booking not found");
-    }
-
-    const userEmail = booking.user?.email;
-    if (userEmail) {
-      await emailConfirmation(userEmail, booking);
-    }
-
-    res.render("bookings/confirmation", { booking });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal server error");
-  }
-});
-
-router.get("/:id/show", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const booking = await Booking.findById(id)
-      .populate("listing")
-      .populate("user"); // populate user as well
-
-    if (!booking) {
-      return res.status(404).send("Booking not found.");
-    }
-
-    res.render("bookings/show", { booking });
-  } catch (err) {
-    console.error("Error fetching booking:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+router.get("/:id/show", isLoggedIn, wrapAsync(bookingController.showBooking));
 
 router.get(
   "/resendotp/:pendingBookingId",
@@ -96,31 +62,7 @@ router.get(
   wrapAsync(bookingController.resendOtp)
 );
 
-router.delete("/:id", async (req, res) => {
-  const bookingId = req.params.id;
-
-  const booking = await Booking.findById(bookingId)
-    .populate("listing")
-    .populate("user");
-
-  if (!booking) {
-    return res.status(404).json({ error: "Booking not found" });
-  }
-
-  // Send cancellation email before deletion
-  if (booking.user?.email) {
-    try {
-      await CancellationEmail(booking.user.email, booking);
-    } catch (err) {
-      console.error("Error sending cancellation email:", err.message);
-    }
-  }
-
-  await Booking.findByIdAndDelete(bookingId);
-
-  req.flash("success", "Booking Canceled.");
-  res.redirect("/bookings/mybookings");
-});
+router.delete("/:id", wrapAsync(bookingController.cancelBooking));
 
 router.post(
   "/complete/:pendingBookingId",

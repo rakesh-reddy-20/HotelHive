@@ -1,9 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Booking = require("../models/booking");
 const wrapAsync = require("../utils/wrapAsync.js");
-const emailConfirmation = require("../utils/emailConfirmation.js");
-const CancellationEmail = require("../utils/CancellationEmail.js");
 const ExpressError = require("../utils/ExpressError.js");
 const bookingController = require("../controllers/booking.js");
 const { isLoggedIn } = require("../middleware.js");
@@ -31,7 +28,6 @@ router.get(
 
 router.post(
   "/:id/checkavailability",
-  isLoggedIn,
   wrapAsync(bookingController.checkAvability)
 );
 

@@ -4,6 +4,8 @@ const generateOTP = require("../utils/generateOTP");
 const PendingBooking = require("../models/pendingbooking");
 const Listing = require("../models/listing");
 const User = require("../models/user");
+const emailConfirmation = require("../utils/emailConfirmation.js");
+const CancellationEmail = require("../utils/CancellationEmail.js");
 
 // render new booking form
 module.exports.renderBookingForm = async (req, res) => {

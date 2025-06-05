@@ -20,25 +20,30 @@ router
       failureRedirect: "/user/login",
       failureFlash: true,
     }),
-    (req, res) => {
-      req.flash("success", `Hello ${req.user.name}, Welcome to HotelHive!!!`);
+    (req, res, next) => {
+      const { name, role } = req.user;
 
-      let roleBasedRedirect;
+      req.flash("success", `Hello ${name}, Welcome to HotelHive!!!`);
 
-      if (req.user.role === "Customer") {
-        roleBasedRedirect = "/listings";
-      } else if (req.user.role === "Owner") {
-        roleBasedRedirect = "/dashboard/home";
-      } else if (req.user.role === "Admin") {
-        roleBasedRedirect = "/admin/dashboard";
-      } else {
-        req.logout(() => {
+      // Role-based redirection
+      const roleRedirectMap = {
+        Customer: "/listings",
+        Owner: "/dashboard/home",
+        Admin: "/admin/dashboard",
+      };
+
+      const roleBasedRedirect = roleRedirectMap[role];
+
+      // Handle invalid role
+      if (!roleBasedRedirect) {
+        return req.logout((err) => {
+          if (err) return next(err);
           req.flash("error", "Invalid user role. Please contact support.");
           return res.redirect("/user/login");
         });
-        return;
       }
 
+      // Redirect to saved URL or role-based path
       const redirectUrl = res.locals.redirectUrl || roleBasedRedirect;
       res.redirect(redirectUrl);
     }
